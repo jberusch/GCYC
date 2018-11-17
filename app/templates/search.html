@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Search Student Data</h2>
+	<form action="" method="post" novalidate>
+		{{ form.hidden_tag() }}
+		<p>
+			{{form.student_id.label}}
+			<br>
+			{{form.student_id(size=15)}}
+		</p>
+		<p>
+			{{form.filter1()}} {{form.filter1.label}}
+		</p>
+		<p> {{form.submit()}} </p>
+	</form>
+{% endblock %}
