@@ -13,5 +13,12 @@
 			{{form.filter1()}} {{form.filter1.label}}
 		</p>
 		<p> {{form.submit()}} </p>
+
+		{% if results and results['student_id'] %}
+		<hr>
+		<p>Student ID: {{ results['student_id'] }}</p>
+		<p>Filter1: {{ results['filter1'] }}</p>
+		{% endif %}
+
 	</form>
 {% endblock %}
