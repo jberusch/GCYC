@@ -14,7 +14,10 @@ def search():
 	if form.validate_on_submit():
 		form_data = {
 			"student_id": form.student_id.data,
-			"gender": form.gender.data
+			"gender": form.gender.data,
+			"ms": form.ms.data,
+			"school": form.school.data,
+			"advisor": form.advisor.data
 		}
 		results = helpers.get_data(form_data)
 		print(results)

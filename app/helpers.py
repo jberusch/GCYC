@@ -35,7 +35,28 @@ def get_data(form_data):
 	print(col_headers) # check
 
 	student_row = get_row(id)
+	# check that a match was found
+	if not student_row:
+		return "Sorry, we couldn't find data on that student ID."
+
+	print('===========================================')
 	print_row(col_headers,student_row)
 
+	results = {}
+
+	# get data asked for by filters
+	if form_data['gender']:
+		results['Gender'] = student_row[col_headers.index('Gender')].value
+	if form_data['ms']:
+		results['Middle School'] = student_row[col_headers.index('Middle School')].value
+	if form_data['school']:
+		results['School'] = student_row[col_headers.index('School')].value
+	if form_data['advisor']:
+		results['Advisor'] = student_row[col_headers.index('Advisor')].value
+
+	# always get GPA (users say they look @ that usually in chief)
+	# get GPA last --> translates to "1st" in dictionary
+	results['GPA'] = student_row[col_headers.index('GPA')].value
+
 	print("=========== ending get_data ===============")
-	return "sample get_data output"
+	return results
