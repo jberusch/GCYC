@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, request
 from app.forms import SearchForm
-
+import app.helpers as helpers
 
 @app.route('/')
 @app.route('/index')
@@ -16,6 +16,8 @@ def search():
 			"student_id": form.student_id.data,
 			"filter1": form.filter1.data
 		}
+		results = helpers.get_data(form_data)
+		print(results)
 		return render_template('search.html', title = 'Search', form = form, results = form_data)
 
 	return render_template('search.html', title = 'Search', form = form)
