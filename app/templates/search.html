@@ -9,15 +9,27 @@
 			<br>
 			{{form.student_id(size=15)}}
 		</p>
+
+		<!-- this is hideous // I need to find a way to do this in a loop -->
 		<p>
-			{{form.filter1()}} {{form.filter1.label}}
+			{{form.gender()}} {{form.gender.label}}
 		</p>
+		<p>
+			{{form.ms()}} {{form.ms.label}}
+		</p>
+		<p>
+			{{form.school()}} {{form.school.label}}
+		</p>
+		<p>
+			{{form.advisor()}} {{form.advisor.label}}
+		</p>
+
 		<p> {{form.submit()}} </p>
 
 		{% if results and results['student_id'] %}
 		<hr>
 		<p>Student ID: {{ results['student_id'] }}</p>
-		<p>Filter1: {{ results['filter1'] }}</p>
+		<p>Gender: {{ results['gender'] }}</p>
 		{% endif %}
 
 	</form>

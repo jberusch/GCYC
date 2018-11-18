@@ -14,11 +14,11 @@ def search():
 	if form.validate_on_submit():
 		form_data = {
 			"student_id": form.student_id.data,
-			"filter1": form.filter1.data
+			"gender": form.gender.data
 		}
 		results = helpers.get_data(form_data)
 		print(results)
-		return render_template('search.html', title = 'Search', form = form, results = form_data)
+		return render_template('search.html', title = 'Search', form = form, results = results)
 
 	return render_template('search.html', title = 'Search', form = form)
 
