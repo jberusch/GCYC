@@ -28,9 +28,17 @@
 
 		{% if results %}
 		<hr>
-		<h4>Results</h4>
+		<h2>Results</h2>
 			{% for field,val in results.items() %}
-			<p>{{ field }}: {{ val }}</p>
+				{% if field == 'GPA Dict' %}
+					<!-- print each GPA value -->
+					<h4>GPAs</h4>
+					{% for date,num in val.items() %}
+						<p>{{ date }}: {{ num }} </p>
+					{% endfor %}
+				{% else %}
+					<p>{{ field }}: {{ val }}</p>
+				{% endif %}
 			{% endfor %}
 		{% endif %}
 

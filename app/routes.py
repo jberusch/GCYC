@@ -19,7 +19,7 @@ def search():
 			"school": form.school.data,
 			"advisor": form.advisor.data
 		}
-		results = helpers.get_data(form_data)
+		results = helpers.get_individual_student_data(form_data)
 		print(results)
 		return render_template('search.html', title = 'Search', form = form, results = results)
 
