@@ -5,6 +5,8 @@ from wtforms.validators import DataRequired
 # help with 
 
 class SearchForm(FlaskForm):
+	select_individual = BooleanField('Individual')
+	select_group = BooleanField('Group')
 	student_id = StringField('Student ID #', validators=[DataRequired()])
 	gender = BooleanField('Gender')
 	ms = BooleanField('Middle School')

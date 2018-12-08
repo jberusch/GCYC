@@ -13,15 +13,16 @@ def search():
 	form = SearchForm()
 	if form.validate_on_submit():
 		form_data = {
+			"select_individual": form.select_individual.data,
+			"select_group": form.select_group.data,
 			"student_id": form.student_id.data,
 			"gender": form.gender.data,
 			"ms": form.ms.data,
 			"school": form.school.data,
 			"advisor": form.advisor.data
 		}
-		results = helpers.get_individual_student_data(form_data)
-		print(results)
-		return render_template('search.html', title = 'Search', form = form, results = results)
+		res = helpers.get_individual_student_data(form_data)
+		return render_template('search.html', title = 'Search', form = form, raw_data = res['data'], plot = res['plot'])
 
 	return render_template('search.html', title = 'Search', form = form)
 

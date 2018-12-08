@@ -1,33 +1,14 @@
-from openpyxl import load_workbook
+# library imports
+import collections
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
-# defining global vars
+from io import BytesIO
+import base64
 
-# base_filepath = '/home/jberusch/GCYC/app/resources/' # use if CSIL
-base_filepath = '/home/jberusch/Desktop/GCYC/app/resources/' # use if laptop
-
-wb1 = load_workbook(base_filepath + 'eoy_dashboard.xlsx')
-wb2 = load_workbook(base_filepath + 'progress_to_date_edit.xlsx')
-prog = wb2['Sheet1']
-
-# get all column headers
-def get_col_headers():
-	column_headers = []
-	for cell in prog[1]:
-		column_headers.append(cell.value)
-
-	return column_headers
-
-# find row corresponding to student id input 
-def get_row(id):
-	for row in prog.rows:
-		if (row[0].value == id):
-			return row
-
-# print a row with labels
-def print_row(headers,row):
-	for i in range(len(headers)):
-		print(headers[i])
-		print(row[i].value)
+# helper imports
+from parsing_xlsx import get_col_headers, get_row, print_row
 
 def get_filter_data(form_data, student_row, col_headers):
 	results = {}
@@ -44,19 +25,66 @@ def get_filter_data(form_data, student_row, col_headers):
 
 	return results
 
-def get_gpa_data(student_row, col_headers):
-	res = {} # dictionary to hold all results
+# PURPOSE: determine whether a string is a date
+# really just tests if the 1st char is a number
+def is_date(str):
+	try:
+		int(str[0])
+		return True
+	except ValueError:
+		return False
 
-	# get all columns between 'Name' and 'GPA'
-	index = col_headers.index('Name')
-	i = 1
-	current_header = 'Name'
-	while current_header != 'GPA':
-		current_header = col_headers[index+i]
-		res[current_header] = student_row[index+i].value
+# PURPOSE: get any data that has many points in time --> return ordered dict
+# field: 'GPA', 'F Count', etc.
+# to_ignore: columns in that field we don't want
+def get_longitudinal_data(student_row, col_headers, field, to_ignore):
+	res = collections.OrderedDict() # ordered dictionary to hold all results
+
+	index = col_headers.index(field)
+	i = 0
+	current_header = col_headers[index]
+	hit_date = False
+	# loop until we hit something that isn't a date (get original field & EOY value)
+	while True:
+		print("start loop w/ current_header = " + current_header)
+		# update bool once we've hit a date column
+		if is_date(current_header):
+			hit_date = True
+		# if it's not a date & we've hit a date already, break
+		elif hit_date:
+			break
+		
+		# add item to dict if it's not in to_ignore
+		if len(filter(lambda x: x == current_header, to_ignore)) == 0:
+			print("adding " + current_header)
+			res[current_header] = student_row[index-i].value
+		
 		i += 1
+		current_header = col_headers[index-i]
+		print("current_header: " + current_header)
 
+	res = collections.OrderedDict(reversed(list(res.items())))
 	return res
+
+# plot all the GPAs for an individual student
+def plot_longitudinal_data(values_dict):
+	x_values = values_dict.keys()
+	y_values = values_dict.values()
+
+	figure, tmp = plt.subplots(nrows=1, ncols=1)
+	# make figure bigger
+	figure.set_size_inches(25,15)
+	tmp.plot(x_values, y_values)
+
+	fig_file = BytesIO()
+	plt.savefig(fig_file, format='png')
+	fig_file.seek(0)
+	fig_data_png = base64.b64encode(fig_file.getvalue())
+	return fig_data_png
+
+	# figure.savefig('./app/static/plot.png') 
+	# plt.close(figure)
+	return
 
 def get_individual_student_data(form_data):
 	print("========== starting get_data ==============")
@@ -65,7 +93,7 @@ def get_individual_student_data(form_data):
 	id = int(form_data['student_id'])
 
 	col_headers = get_col_headers()
-	print(col_headers) # check
+	# print(col_headers) # check
 
 	student_row = get_row(id)
 	# check that a match was found
@@ -73,14 +101,23 @@ def get_individual_student_data(form_data):
 		return "Sorry, we couldn't find data on that student ID."
 
 	print('===========================================')
-	print_row(col_headers,student_row)
+	# print_row(col_headers,student_row)
 
 	# get data asked for by filters
-	results = get_filter_data(form_data, student_row, col_headers)
+	filter_data = get_filter_data(form_data, student_row, col_headers)
 
 	# always get GPA (users say they look @ that usually in chief)
 	# get GPA last --> translates to "1st" in dictionary
-	results['GPA Dict'] = get_gpa_data(student_row, col_headers)
+	filter_data['GPA Dict'] = get_longitudinal_data(student_row, col_headers, 'GPA', ['Difference'])
+	
+	# DEBUG
+	plot = plot_longitudinal_data(filter_data['GPA Dict'])
+
+	res = {}
+	res['data'] = filter_data
+	res['plot'] = plot
+
+	# TODO: show whether a student is on track!
 
 	print("=========== ending get_data ===============")
-	return results
+	return res

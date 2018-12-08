@@ -1,41 +1,60 @@
 {% extends "base.html" %}
 
 {% block content %}
+	<!-- toggle individual/aggregate data -->
 	<h2>Search Student Data</h2>
 	<form action="" method="post" novalidate>
 		{{ form.hidden_tag() }}
-		<p>
-			{{form.student_id.label}}
-			<br>
-			{{form.student_id(size=15)}}
-		</p>
+		<div>
+			<h5>Would you like data for an individual or for a group of students?</h5>
+			<p>
+				{{ form.select_individual.label }} {{ form.select_individual() }}
+				{{ form.select_group.label }} {{ form.select_group() }} 
+			</p>
+		</div>
 
-		<!-- this is hideous // I need to find a way to do this in a loop -->
-		<p>
-			{{form.gender()}} {{form.gender.label}}
-		</p>
-		<p>
-			{{form.ms()}} {{form.ms.label}}
-		</p>
-		<p>
-			{{form.school()}} {{form.school.label}}
-		</p>
-		<p>
-			{{form.advisor()}} {{form.advisor.label}}
-		</p>
+		<div>
+			<div style="display: inline-block; background-color: #92a8d1; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black';">
+				<p>
+					{{form.student_id.label}}
+					<br>
+					{{form.student_id(size=15)}}
+				</p>
+
+				<!-- this is hideous // I need to find a way to do this in a loop -->
+				<p>
+					{{form.gender()}} {{form.gender.label}}
+				</p>
+				<p>
+					{{form.ms()}} {{form.ms.label}}
+				</p>
+				<p>
+					{{form.school()}} {{form.school.label}}
+				</p>
+				<p>
+					{{form.advisor()}} {{form.advisor.label}}
+				</p>
+			</div>
+			<!-- TODO: group data by advisory, MS, GCYC Mamber? -->
+			<div style="display: inline-block; background-color: #92a8d1; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black';">
+
+			</div>
+		</div>
+
 
 		<p> {{form.submit()}} </p>
 
-		{% if results %}
+		{% if raw_data %}
 		<hr>
 		<h2>Results</h2>
-			{% for field,val in results.items() %}
+			{% for field,val in raw_data.items() %}
 				{% if field == 'GPA Dict' %}
 					<!-- print each GPA value -->
 					<h4>GPAs</h4>
 					{% for date,num in val.items() %}
 						<p>{{ date }}: {{ num }} </p>
 					{% endfor %}
+					<img src="data:image/png;base64,{{ plot }}" alt="fail" width="1000">
 				{% else %}
 					<p>{{ field }}: {{ val }}</p>
 				{% endif %}
