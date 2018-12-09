@@ -60,6 +60,7 @@
 
 	<!-- display error msg if we got one -->
 	{% if error_msg %}
+		<hr>
 		<p style="color: red;">
 			Uh oh! Looks like we ran into the following error: <br>
 			{{ error_msg }}	<br>
@@ -67,28 +68,75 @@
 		</p>
 	{% endif %}
 
-	<!-- display resulting data -->
-	{% if raw_data %}
-	<hr>
-	<h2>Results</h2>
+	<!-- display individual data: On Track -->
+	{% if individual_form.student_id.data %}
+		<hr>
+		<h2>Getting Data for Student ID # {{ individual_form.student_id.data }}</h2>
 		{% if on_track %}
-			<p style="color: green;">This student is on track!</p>
+			<h3 style="color: green;">This student is on track!</h3>
 		{% else %}
-			<p style="color: red;">This student is not on track.</p>
+			<h3 style="color: red;">This student is not on track.</h3>
 		{% endif %}
-		{% for field,val in raw_data.items() %}
-			{% if field == 'GPA Dict' %}
-				<!-- print each GPA value -->
-				<h4>GPAs</h4>
-				{% for date,num in val.items() %}
-					<p>{{ date }}: {{ num }} </p>
+	{% endif %}
+
+	<!-- display individual data: demographic data -->
+	{% if demo_data %}
+		<hr>
+		<h4>Student Information:</h4>
+		<table>
+			<tr>
+				<th style="border: 1px solid black; padding: 8px">Category</th>
+				{% for key in demo_data.keys() %}
+					<td style="border: 1px solid black; padding: 8px">{{ key }}</td>
 				{% endfor %}
-				<img src="data:image/png;base64,{{ plot }}" alt="fail" width="1000">
-			{% else %}
-				<p>{{ field }}: {{ val }}</p>
-			{% endif %}
-		{% endfor %}
+			</tr>
+			<tr>
+				<th style="border: 1px solid black; padding: 8px">Value</th>
+				{% for val in demo_data.values() %}
+					<td style="border: 1px solid black; padding: 8px">{{ val }}</td>
+				{% endfor %}
+			</tr>
+		</table>
+	{% endif %}
+
+	<!-- display individual data: GPA over time -->
+	{% if gpa_dict %}
+		<hr>
+		<!-- print each GPA value -->
+		<h4>GPA Over Time:</h4>
+		<table>
+			<tr>
+				<th style="border: 1px solid black; padding: 8px">Date</th>
+				{% for date in gpa_dict.keys() %}
+					<td style="border: 1px solid black; padding: 8px">{{ date }}</td>
+				{% endfor %}
+			</tr>
+			<tr>
+				<th style="border: 1px solid black; padding: 8px">GPA</th>
+				{% for gpa in gpa_dict.values() %}
+					<td style="border: 1px solid black; padding: 8px">{{ gpa }}</td>
+				{% endfor %}
+			</tr>
+		</table>
+	{% endif %}
+
+	<!-- display individual data: plot -->
+	{% if plots %}
+		<img src="data:image/png;base64,{{ plots['gpa_plot'] }}" alt="fail" width="1000">
+		<p><em>NB: If a value is ignored in this graph, that means it is set to empty or =#N/A in Excel</em></p>
+	{% endif %}
+
+	<!-- display ids of students in group -->
+	{% if student_ids and group_search_filter %}
+	<hr>
+	<h4>IDs of Students in Group: {{ group_search_filter }}</h4>
+	<table style="display: block;">
+		<tr>
+			<th style="border: 1px solid black; padding: 8px">ID #</th>
+			{% for id in student_ids %}
+				<td style="border: 1px solid black; padding: 8px; display: inline-block">{{ id }}</td>
+			{% endfor %}
+		</tr>
+	</table>
 	{% endif %}
 {% endblock %}
-
-				<!-- {{ group_form.adv_bool() }} {{ group_form.adv_bool.label }} -->

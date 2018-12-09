@@ -7,20 +7,32 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 
-def get_filter_data(form_data, student_row, col_headers):
-	results = {}
+# PURPOSE: grab all demographic info (Gender, MS, Advisory, etc.) from student row
+def get_demographic_data(student_row,col_headers):
+	res = collections.OrderedDict() # ordered just so it's not in super weird order
+	# Start after ID & go until ECS Class (doesn't look helpful)
+	current_header = col_headers[1]
+	i = 1
+	while current_header != 'ECS Class':
+		res[current_header] = student_row[i].value
+		i += 1
+		current_header = col_headers[i]
+	return res
 
-	# for every filter, get the value if it's true
-	if form_data['gender']:
-		results['Gender'] = student_row[col_headers.index('Gender')].value
-	if form_data['ms']:
-		results['Middle School'] = student_row[col_headers.index('Middle School')].value
-	if form_data['school']:
-		results['School'] = student_row[col_headers.index('School')].value
-	if form_data['advisor']:
-		results['Advisor'] = student_row[col_headers.index('Advisor')].value
+# def get_filter_data(form_data, student_row, col_headers):
+# 	results = {}
 
-	return results
+# 	# for every filter, get the value if it's true
+# 	if form_data['gender']:
+# 		results['Gender'] = student_row[col_headers.index('Gender')].value
+# 	if form_data['ms']:
+# 		results['Middle School'] = student_row[col_headers.index('Middle School')].value
+# 	if form_data['school']:
+# 		results['School'] = student_row[col_headers.index('School')].value
+# 	if form_data['advisor']:
+# 		results['Advisor'] = student_row[col_headers.index('Advisor')].value
+
+# 	return results
 
 # PURPOSE: determine whether a string is a date
 # really just tests if the 1st char is a number
@@ -76,38 +88,33 @@ def plot_longitudinal_data(values_dict):
 	x_values = values_dict.keys()
 	y_values = values_dict.values()
 
-	print("x_values: ")
-	print(x_values)
-	print("y_values: ")
-	print(y_values)
-
-	# figure, ax = plt.subplots(nrows=1, ncols=1)
-	# figure.set_size_inches(25,15) # make figure bigger
-	# ax.plot(x_values, y_values)
-	# ax.set_ylim(ymin=0) # start y axis at 0
-	# ax.title('Students GPA')
+	# set any #N/A values to None
+	for i in range(len(y_values)):
+		if not isinstance(y_values[i],float):
+			y_values[i] = None
 
 	plt.plot(x_values,y_values)
-	plt.title('Student\'s GPA')
-	plt.xlabel('Data Measured')
-	plt.ylabel('GPA')
+	plt.title('Student\'s GPA',fontsize=40)
+	plt.xlabel('Date Measured',fontsize=30)
+	plt.ylabel('GPA',fontsize=30)
 	plt.ylim(ymin=0)
 	plt.tight_layout()
 	plt.tick_params(labelsize=20, labelrotation=90)
 
-	figure = plt.gcf()
-	figure.set_size_inches(25,15)
+	fig = plt.gcf()
+	fig.set_size_inches(25,15)
 
 	# converting file to encoded png for rendering
 	fig_file = BytesIO()
 	plt.savefig(fig_file, format='png')
 	fig_file.seek(0)
 	fig_data_png = base64.b64encode(fig_file.getvalue())
+	fig.clear()
 	return fig_data_png
 
+	# plt.close(fig)
+	# fig.clear()
 	# figure.savefig('./app/static/plot.png') 
-	# plt.close(figure)
-	return
 
 def individual_on_track(student_row, col_headers):
 	# get most recent F Count & GPA

@@ -3,11 +3,23 @@
 	<title>Dashboard - {{title}}</title>
 </head>
 <body>
-	<div>Dashboard: 
-		<a href="{{url_for('index')}}">Home</a>
-		<a href="{{url_for('search')}}">Search</a>
+	<div style="justify-content: space-between">
+		<div style="display: inline-block; vertical-align: top;">
+			Dashboard: 
+			<a href="{{url_for('index')}}">Home</a>
+			<a href="{{url_for('search')}}">Search</a>
+			<a href="{{url_for('upload')}}">Upload</a>
+		</div>
 	</div>
 	<hr>
 	{% block content %}{% endblock %}
+	<div style="height: 100px"></div>
+	<div style="position:fixed; bottom: 0; width: 100%; height: 90px; background-color: peru;padding: 5px;">
+		Campus Catalyst Fall 2018;
+		For Gary Comer Youth Center;
+		By Joe Berusch
+		<img src="http://www.garycomeryouthcenter.org/assets/img/GaryComerYouthCenter-On-the-Comer-Education-Campus.png" 
+			alt="(Logo Here)" height="80" width="240" style="margin-left: 20px;margin-top: 3px">
+	</div>
 </body>
 </html>

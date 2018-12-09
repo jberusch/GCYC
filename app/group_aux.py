@@ -21,3 +21,9 @@ def calc_percent_on_track(group_rows,col_headers):
         whole += 1
     
     return ((part/float(whole)) * 100)
+
+def get_ids_in_group(group_rows):
+    res = []
+    for student_row in group_rows:
+        res.append(student_row[0].value)
+    return res

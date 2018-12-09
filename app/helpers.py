@@ -1,7 +1,10 @@
+# librayr imports
+import collections
+
 # helper imports
 from parsing_xlsx import get_col_headers, get_row, print_row, get_rows_in_group
-from indiv_aux import get_filter_data, get_longitudinal_data, plot_longitudinal_data, individual_on_track
-from group_aux import get_group_longitudinal_data, calc_percent_on_track
+from indiv_aux import get_longitudinal_data, plot_longitudinal_data, individual_on_track, get_demographic_data
+from group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group
 
 def get_individual_student_data(form_data):
 	print("========== starting get_data ==============")
@@ -19,20 +22,25 @@ def get_individual_student_data(form_data):
 	if not student_row:
 		return "Sorry, we couldn't find data on that student ID."
 
-	# get data asked for by filters
-	filter_data = get_filter_data(form_data, student_row, col_headers)
+	res = {}
+	# get demographic data
+	demo_data = get_demographic_data(student_row,col_headers)
 
 	# always get GPA (users say they look @ that usually in chief)
 	# get GPA last --> translates to "1st" in dictionary
-	filter_data['GPA Dict'] = get_longitudinal_data(student_row, col_headers, 'GPA', ['Difference'])
+	gpa_dict = get_longitudinal_data(student_row,col_headers,'GPA',['Difference'])
+	# fc_dict = get_longitudinal_data(student_row,col_headers,'F Count')
+	# ls_matrix = get_
 
+	plots = collections.OrderedDict()
 	# plot GPAs over time
-	# TODO: remove empty fields from plot
-	plot = plot_longitudinal_data(filter_data['GPA Dict'])
+	plots['gpa_plot'] = plot_longitudinal_data(gpa_dict)
+
 
 	res = {}
-	res['data'] = filter_data
-	res['plot'] = plot
+	res['demo_data'] = demo_data
+	res['gpa_dict'] = gpa_dict
+	res['plots'] = plots
 	res['on_track'] = individual_on_track(student_row, col_headers)
 
 	print("=========== ending get_data ===============")
@@ -54,10 +62,13 @@ def get_group_data(form_data):
 		return "Sorry, this tool only supports filtering groups by 1 criterion (advisor, Middle School, GCYC Member) right now!"
 	elif adv:
 		group_rows = get_rows_in_group(col_headers, 'Advisor', adv)
+		filt = "Students From " + adv + "\'s Advisory"
 	elif ms:
 		group_rows = get_rows_in_group(col_headers, 'Middle School', 'GCMS')
+		filt = "Only Former GCMS Attendees"
 	elif gcyc_mem:
 		group_rows = get_rows_in_group(col_headers, 'GCYC Member?', 'Yes')
+		filt = "Only GCYC Members"
 	else:
 		return "You have to choose an option! Enter an advisor, check Middle School to see only GCMS students, or check GCYC Members to see only those studens."
 
@@ -70,4 +81,7 @@ def get_group_data(form_data):
 	percent_on_track = calc_percent_on_track(group_rows,col_headers)
 	print("percent_on_track: " + str(percent_on_track) + "%")
 
+	# add stuff to return dict
+	res['student_ids'] = get_ids_in_group(group_rows)
+	res['group_search_filter'] = filt
 	return res
