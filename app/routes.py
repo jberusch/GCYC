@@ -33,7 +33,7 @@ def search():
 				group_form=group_form,error_msg=res)
 
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
-			demo_data=res['demo_data'], gpa_dict=res['gpa_dict'], plots=res['plots'], on_track=res['on_track'])
+			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
 	# searching by group
 	if group_form.validate_on_submit() and group_form.group_submit.data:

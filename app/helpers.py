@@ -29,19 +29,39 @@ def get_individual_student_data(form_data):
 	# always get GPA (users say they look @ that usually in chief)
 	# get GPA last --> translates to "1st" in dictionary
 	gpa_dict = get_longitudinal_data(student_row,col_headers,'GPA',['Difference'])
-	# fc_dict = get_longitudinal_data(student_row,col_headers,'F Count')
-	# ls_matrix = get_
+	fc_dict = get_longitudinal_data(student_row,col_headers,'F Count')
+	ls_dict = get_longitudinal_data(student_row,col_headers,'LaSalle Free')
+	at_dict = get_longitudinal_data(student_row,col_headers,'School Attendance',['Difference2'])
+	dt_dict = get_longitudinal_data(student_row,col_headers,'Detentions')
+
+	dicts = collections.OrderedDict()
+	dicts['gpa'] = gpa_dict
+	dicts['fc'] = fc_dict
+	dicts['ls'] = ls_dict
+	dicts['at'] = at_dict
+	dicts['dt'] = dt_dict
 
 	plots = collections.OrderedDict()
 	# plot GPAs over time
-	plots['gpa_plot'] = plot_longitudinal_data(gpa_dict)
+	plots['gpa'] = plot_longitudinal_data(gpa_dict,'GPA')
+	plots['fc'] = plot_longitudinal_data(fc_dict,'F Count')
+	plots['ls'] = plot_longitudinal_data(ls_dict,'LaSalles')
+	plots['at'] = plot_longitudinal_data(at_dict,'School Attendance')
+	plots['dt'] = plot_longitudinal_data(dt_dict,'Detentions')
 
+	metrics = collections.OrderedDict()
+	metrics['gpa'] = 'GPA'
+	metrics['fc'] = 'F Count'
+	metrics['ls'] = 'LaSalles'
+	metrics['at'] = 'School Attendance'
+	metrics['dt'] = 'Detentions'
 
 	res = {}
 	res['demo_data'] = demo_data
-	res['gpa_dict'] = gpa_dict
+	res['dicts'] = dicts
 	res['plots'] = plots
 	res['on_track'] = individual_on_track(student_row, col_headers)
+	res['metrics'] = metrics
 
 	print("=========== ending get_data ===============")
 	return res

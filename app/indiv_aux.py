@@ -56,7 +56,7 @@ def get_col_index(col_headers,field):
 # PURPOSE: get any data that has many points in time --> return ordered dict
 # field: 'GPA', 'F Count', etc.
 # to_ignore: columns in that field we don't want
-def get_longitudinal_data(student_row, col_headers, field, to_ignore):
+def get_longitudinal_data(student_row, col_headers, field, to_ignore=[]):
 	res = collections.OrderedDict() # ordered dictionary to hold all results
 
 	index = get_col_index(col_headers,field)
@@ -84,20 +84,24 @@ def get_longitudinal_data(student_row, col_headers, field, to_ignore):
 	return res
 
 # plot all the GPAs for an individual student
-def plot_longitudinal_data(values_dict):
+def plot_longitudinal_data(values_dict,field):
+	print("=============== " + field + " ====================")
 	x_values = values_dict.keys()
 	y_values = values_dict.values()
 
 	# set any #N/A values to None
 	for i in range(len(y_values)):
-		if not isinstance(y_values[i],float):
+		if not isinstance(y_values[i],(float,int,long)):
 			y_values[i] = None
 
+	print(x_values)
+	print(y_values)
+
 	plt.plot(x_values,y_values)
-	plt.title('Student\'s GPA',fontsize=40)
+	plt.title('Student\'s '+field,fontsize=40)
 	plt.xlabel('Date Measured',fontsize=30)
-	plt.ylabel('GPA',fontsize=30)
-	plt.ylim(ymin=0)
+	plt.ylabel(field,fontsize=30)
+	# plt.ylim(ymin=0) # set ymin to 0
 	plt.tight_layout()
 	plt.tick_params(labelsize=20, labelrotation=90)
 
