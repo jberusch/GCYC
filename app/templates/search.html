@@ -2,64 +2,93 @@
 
 {% block content %}
 	<!-- toggle individual/aggregate data -->
-	<h2>Search Student Data</h2>
-	<form action="" method="post" novalidate>
-		{{ form.hidden_tag() }}
-		<div>
-			<h5>Would you like data for an individual or for a group of students?</h5>
+	<h1>Search Student Data</h1>
+	<div>
+		<h3>Would you like data for an individual or for a group of students?</h3>
+	</div>
+
+	<form action="" method="post" novalidate style="display: inline-block;vertical-align: top;">
+		{{ individual_form.hidden_tag() }}
+		<div style="background-color: #92a8d1; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black'; height: 400px;width: 300px">
+			<h4>Data by Student</h4>
 			<p>
-				{{ form.select_individual.label }} {{ form.select_individual() }}
-				{{ form.select_group.label }} {{ form.select_group() }} 
+				{{individual_form.student_id.label}}
+				<br>
+				{{individual_form.student_id(size=15)}}
+			</p>
+
+			<!-- this is hideous // I need to find a way to do this in a loop -->
+			<p>
+				{{individual_form.gender()}} {{individual_form.gender.label}}
+			</p>
+			<p>
+				{{individual_form.ms()}} {{individual_form.ms.label}}
+			</p>
+			<p>
+				{{individual_form.school()}} {{individual_form.school.label}}
+			</p>
+			<p>
+				{{individual_form.advisor()}} {{individual_form.advisor.label}}
+			</p>
+			<p> {{individual_form.indiv_submit()}} </p>
+		</div>
+	</form>
+		
+	<form action="" method="post" novalidate style="display: inline-block;vertical-align: top;">
+		{{ group_form.hidden_tag() }}
+		<div style="background-color: #8daae0; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black'; height: 400px;width: 300px">
+			<h4>Data by Group</h4>
+			<h6>See data for students by advisor...</h6>
+			<p>
+				{{ group_form.adv_search.label }} <br> {{ group_form.adv_search(size=15 )}} <br>
+			</p>
+			<hr>
+			<h6>OR separate all students from GCMS...</h6>
+			<p>
+				{{ group_form.ms() }} {{ group_form.ms.label }}
+			</p>
+			<hr>
+			<h6>OR separate out all GCYC members...</h6>
+			<p>
+				{{ group_form.gcyc_mem() }} {{ group_form.gcyc_mem.label }}
+			</p>
+			<p>
+				{{ group_form.group_submit() }}
 			</p>
 		</div>
-
-		<div>
-			<div style="display: inline-block; background-color: #92a8d1; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black';">
-				<p>
-					{{form.student_id.label}}
-					<br>
-					{{form.student_id(size=15)}}
-				</p>
-
-				<!-- this is hideous // I need to find a way to do this in a loop -->
-				<p>
-					{{form.gender()}} {{form.gender.label}}
-				</p>
-				<p>
-					{{form.ms()}} {{form.ms.label}}
-				</p>
-				<p>
-					{{form.school()}} {{form.school.label}}
-				</p>
-				<p>
-					{{form.advisor()}} {{form.advisor.label}}
-				</p>
-			</div>
-			<!-- TODO: group data by advisory, MS, GCYC Mamber? -->
-			<div style="display: inline-block; background-color: #92a8d1; padding: 10px; border-width: 3px; border-style: solid; border-color: 'black';">
-
-			</div>
-		</div>
-
-
-		<p> {{form.submit()}} </p>
-
-		{% if raw_data %}
-		<hr>
-		<h2>Results</h2>
-			{% for field,val in raw_data.items() %}
-				{% if field == 'GPA Dict' %}
-					<!-- print each GPA value -->
-					<h4>GPAs</h4>
-					{% for date,num in val.items() %}
-						<p>{{ date }}: {{ num }} </p>
-					{% endfor %}
-					<img src="data:image/png;base64,{{ plot }}" alt="fail" width="1000">
-				{% else %}
-					<p>{{ field }}: {{ val }}</p>
-				{% endif %}
-			{% endfor %}
-		{% endif %}
-
 	</form>
+
+	<!-- display error msg if we got one -->
+	{% if error_msg %}
+		<p style="color: red;">
+			Uh oh! Looks like we ran into the following error: <br>
+			{{ error_msg }}	<br>
+			If this tool doesn't support something you really want to do, make sure to discuss it with ______________!
+		</p>
+	{% endif %}
+
+	<!-- display resulting data -->
+	{% if raw_data %}
+	<hr>
+	<h2>Results</h2>
+		{% if on_track %}
+			<p style="color: green;">This student is on track!</p>
+		{% else %}
+			<p style="color: red;">This student is not on track.</p>
+		{% endif %}
+		{% for field,val in raw_data.items() %}
+			{% if field == 'GPA Dict' %}
+				<!-- print each GPA value -->
+				<h4>GPAs</h4>
+				{% for date,num in val.items() %}
+					<p>{{ date }}: {{ num }} </p>
+				{% endfor %}
+				<img src="data:image/png;base64,{{ plot }}" alt="fail" width="1000">
+			{% else %}
+				<p>{{ field }}: {{ val }}</p>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
 {% endblock %}
+
+				<!-- {{ group_form.adv_bool() }} {{ group_form.adv_bool.label }} -->

@@ -1,0 +1,8 @@
+TODOs:
+Gather data on all students in 1 advisory/MS/GCYC-member/etc
+On track: gpa > 3.0 or >= 3.0?
+Expand excel scrape to cover eoy_dashboard.xlsx
+
+Ideas:
+Get rid of filters & show all individual data
+Get rid of empty values in graphs

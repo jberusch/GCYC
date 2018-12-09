@@ -26,3 +26,16 @@ def print_row(headers,row):
 	for i in range(len(headers)):
 		print(headers[i])
 		print(row[i].value)
+
+# get all rows for which val is in col
+def get_rows_in_group(col_headers, col_name, val):
+	res = []
+	col_index = col_headers.index(col_name)
+
+	# loop through all rows
+	for row in prog.rows:
+		# check value in column
+		if (row[col_index].value == val):
+			res.append(row)
+
+	return res
