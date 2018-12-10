@@ -127,5 +127,4 @@ def individual_on_track(student_row, col_headers):
 	f_count = fc_i == -1 if 0 else student_row[fc_i].value
 	gpa = gpa_i == -1 if 0 else student_row[gpa_i].value
 
-	# QUESTION: gpa >= 3.0 or > 3.0?
 	return (f_count < 2 and gpa >= 3.0)	

@@ -1,3 +1,4 @@
+import collections
 import numpy as np
 from app.indiv_aux import get_longitudinal_data, individual_on_track
 
@@ -7,7 +8,8 @@ def get_group_longitudinal_data(group_rows,col_headers,field,to_ignore=[]):
     res = []
 
     for student_row in group_rows:
-        res.append(get_longitudinal_data(student_row,col_headers,field,to_ignore))
+        dat = [student_row[0].value] # 1st index in array for student ID
+        res.append(dat.append(get_longitudinal_data(student_row,col_headers,field,to_ignore)))
 
     return res
 
@@ -26,4 +28,14 @@ def get_ids_in_group(group_rows):
     res = []
     for student_row in group_rows:
         res.append(student_row[0].value)
+    return res
+
+def build_basic_data(group_rows,col_headers):
+    res = []
+    for student_row in group_rows:
+        tmp_stu = {}
+        tmp_stu['id'] = student_row[0].value
+        tmp_stu['on_track'] = individual_on_track(student_row,col_headers)
+        res.append(tmp_stu)
+
     return res

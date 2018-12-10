@@ -16,20 +16,6 @@
 				<br>
 				{{individual_form.student_id(size=15)}}
 			</p>
-
-			<!-- this is hideous // I need to find a way to do this in a loop -->
-			<p>
-				{{individual_form.gender()}} {{individual_form.gender.label}}
-			</p>
-			<p>
-				{{individual_form.ms()}} {{individual_form.ms.label}}
-			</p>
-			<p>
-				{{individual_form.school()}} {{individual_form.school.label}}
-			</p>
-			<p>
-				{{individual_form.advisor()}} {{individual_form.advisor.label}}
-			</p>
 			<p> {{individual_form.indiv_submit()}} </p>
 		</div>
 	</form>
@@ -99,6 +85,7 @@
 		</table>
 	{% endif %}
 
+	{% if metrics %}
 	{% for type,str in metrics.items() %}
 		{% if dicts[type] %}
 			<hr>
@@ -126,16 +113,24 @@
 			<p><em>NB: If a value is ignored in this graph, that means it is set to empty or =#N/A in Excel</em></p>
 		{% endif %}
 	{% endfor %}
+	{% endif %}
 
 	<!-- display ids of students in group -->
-	{% if student_ids and group_search_filter %}
+	{% if basic_data and group_search_filter %}
 	<hr>
 	<h4>IDs of Students in Group: {{ group_search_filter }}</h4>
+	<p><em>NB: IDs in green represent students on track, red represents the opposite</em></p>
 	<table style="display: block;">
 		<tr>
 			<th style="border: 1px solid black; padding: 8px">ID #</th>
-			{% for id in student_ids %}
-				<td style="border: 1px solid black; padding: 8px; display: inline-block">{{ id }}</td>
+			{% for stu in basic_data %}
+				<td style="border: 1px solid black; padding: 8px; display: inline-block">
+					{% if stu['on_track'] %}	
+						<p style="color: green">{{ stu['id'] }}</p>
+					{% else %}	
+						<p style="color: red">{{ stu['id'] }}</p>
+					{% endif %}
+				</td>
 			{% endfor %}
 		</tr>
 	</table>

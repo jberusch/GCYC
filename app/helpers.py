@@ -4,7 +4,7 @@ import collections
 # helper imports
 from parsing_xlsx import get_col_headers, get_row, print_row, get_rows_in_group
 from indiv_aux import get_longitudinal_data, plot_longitudinal_data, individual_on_track, get_demographic_data
-from group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group
+from group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group, build_basic_data
 
 def get_individual_student_data(form_data):
 	print("========== starting get_data ==============")
@@ -75,7 +75,6 @@ def get_group_data(form_data):
 	col_headers = get_col_headers()
 
 	# TODO: expand ms & gcyc_mem to display false options too
-	# TODO: handle multiple inputs
 	adv,ms,gcyc_mem = form_data['adv_search'],form_data['ms'],form_data['gcyc_mem']
 
 	if (adv and ms) or (ms and gcyc_mem) or (adv and gcyc_mem):
@@ -92,6 +91,7 @@ def get_group_data(form_data):
 	else:
 		return "You have to choose an option! Enter an advisor, check Middle School to see only GCMS students, or check GCYC Members to see only those studens."
 
+	# might do stuff w/ all these matrices eventually
 	gpa_matrix = get_group_longitudinal_data(group_rows,col_headers,'GPA',['Difference'])
 	f_count_matrix = get_group_longitudinal_data(group_rows,col_headers,'F Count')
 	ls_matrix = get_group_longitudinal_data(group_rows,col_headers,'LaSalle Free')
@@ -101,7 +101,10 @@ def get_group_data(form_data):
 	percent_on_track = calc_percent_on_track(group_rows,col_headers)
 	print("percent_on_track: " + str(percent_on_track) + "%")
 
+	# Array of students: id, on_track?
+	basic_data = build_basic_data(group_rows,col_headers)
+
 	# add stuff to return dict
-	res['student_ids'] = get_ids_in_group(group_rows)
+	res['basic_data'] = basic_data
 	res['group_search_filter'] = filt
 	return res

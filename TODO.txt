@@ -1,5 +1,6 @@
 TODOs:
 Display data on all students in 1 advisory/MS/GCYC-member/etc
+    --> start w/ just student IDs and whether or not they're on track --> help user identify which students to focus on individually
 Expand excel scrape to cover eoy_dashboard.xlsx
 Make it possible to upload new Excel file
 

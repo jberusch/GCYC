@@ -32,6 +32,8 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
+		print("==================== returning ===================")
+		print(res['metrics'])
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
@@ -53,7 +55,7 @@ def search():
 				group_form=group_form,error_msg=res)
 
 		return render_template('search.html', title='Search', individual_form=individual_form,
-			group_form=group_form, student_ids=res['student_ids'], group_search_filter=res['group_search_filter'])
+			group_form=group_form, basic_data=res['basic_data'], group_search_filter=res['group_search_filter'])
 
 	return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form)
 
@@ -82,3 +84,7 @@ def upload():
             return redirect(url_for('uploaded_file',
                                     filename=filename))
     return render_template('upload.html',title='Upload')
+
+@app.route('/manual')
+def manual():
+	return "GARY's manual will go here"
