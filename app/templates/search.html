@@ -119,6 +119,7 @@
 	{% if basic_data and group_search_filter %}
 	<hr>
 	<h4>IDs of Students in Group: {{ group_search_filter }}</h4>
+	<p>{{ '{:0.2f}'.format(percent_on_track) }}% of the students in this group are on track!</p>
 	<p><em>NB: IDs in green represent students on track, red represents the opposite</em></p>
 	<table style="display: block;">
 		<tr>

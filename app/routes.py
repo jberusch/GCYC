@@ -55,7 +55,8 @@ def search():
 				group_form=group_form,error_msg=res)
 
 		return render_template('search.html', title='Search', individual_form=individual_form,
-			group_form=group_form, basic_data=res['basic_data'], group_search_filter=res['group_search_filter'])
+			group_form=group_form, basic_data=res['basic_data'], group_search_filter=res['group_search_filter'],
+			percent_on_track=res['percent_on_track'])
 
 	return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form)
 
@@ -87,4 +88,4 @@ def upload():
 
 @app.route('/manual')
 def manual():
-	return "GARY's manual will go here"
+	return render_template('manual.html',title='Manual')

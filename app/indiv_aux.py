@@ -85,7 +85,6 @@ def get_longitudinal_data(student_row, col_headers, field, to_ignore=[]):
 
 # plot all the GPAs for an individual student
 def plot_longitudinal_data(values_dict,field):
-	print("=============== " + field + " ====================")
 	x_values = values_dict.keys()
 	y_values = values_dict.values()
 
@@ -94,14 +93,20 @@ def plot_longitudinal_data(values_dict,field):
 		if not isinstance(y_values[i],(float,int,long)):
 			y_values[i] = None
 
-	print(x_values)
-	print(y_values)
-
 	plt.plot(x_values,y_values)
 	plt.title('Student\'s '+field,fontsize=40)
 	plt.xlabel('Date Measured',fontsize=30)
 	plt.ylabel(field,fontsize=30)
-	# plt.ylim(ymin=0) # set ymin to 0
+
+	# ymin == 0 better for graphs of percentages
+	if field == 'School Attendance':
+		plt.ylim(ymin=0,ymax=1.05) # set ymin to 0
+	elif field == 'Detentions':
+		plt.ylim(ymin=0)
+	# % LaSalle free never < 90%
+	elif field == 'Percentage LaSalle Free':
+		plt.ylim(ymin=0.9,ymax=1.005) # show trends meaningfully
+	
 	plt.tight_layout()
 	plt.tick_params(labelsize=20, labelrotation=90)
 
@@ -115,10 +120,6 @@ def plot_longitudinal_data(values_dict,field):
 	fig_data_png = base64.b64encode(fig_file.getvalue())
 	fig.clear()
 	return fig_data_png
-
-	# plt.close(fig)
-	# fig.clear()
-	# figure.savefig('./app/static/plot.png') 
 
 def individual_on_track(student_row, col_headers):
 	# get most recent F Count & GPA

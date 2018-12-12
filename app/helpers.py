@@ -45,7 +45,7 @@ def get_individual_student_data(form_data):
 	# plot GPAs over time
 	plots['gpa'] = plot_longitudinal_data(gpa_dict,'GPA')
 	plots['fc'] = plot_longitudinal_data(fc_dict,'F Count')
-	plots['ls'] = plot_longitudinal_data(ls_dict,'LaSalles')
+	plots['ls'] = plot_longitudinal_data(ls_dict,'Percentage LaSalle Free')
 	plots['at'] = plot_longitudinal_data(at_dict,'School Attendance')
 	plots['dt'] = plot_longitudinal_data(dt_dict,'Detentions')
 
@@ -107,4 +107,5 @@ def get_group_data(form_data):
 	# add stuff to return dict
 	res['basic_data'] = basic_data
 	res['group_search_filter'] = filt
+	res['percent_on_track'] = percent_on_track
 	return res
