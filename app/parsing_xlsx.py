@@ -1,8 +1,8 @@
+import os
+from app import app
 from openpyxl import load_workbook
 
-# base_filepath = '/home/jberusch/GCYC/app/resources/' # use if CSIL
-base_filepath = '/home/jberusch/Desktop/GCYC/app/resources/' # use if laptop
-
+base_filepath = os.path.join(app.root_path,'resources/')
 wb1 = load_workbook(base_filepath + 'eoy_dashboard.xlsx')
 wb2 = load_workbook(base_filepath + 'progress_to_date_edit.xlsx')
 prog = wb2['Sheet1']
