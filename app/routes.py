@@ -38,10 +38,9 @@ def search():
 				group_form=group_form,error_msg=res)
 
 		print("==================== plot ===================")
-		plot = str(res['plots']['gpa'])
-		print(plot)
-		print(plot[0:2])
-		print(plot[-1])
+		gpa_plot = str(res['plots']['gpa'])
+		res['plots']['gpa'] = bytes(gpa_plot[2:-1])
+
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
