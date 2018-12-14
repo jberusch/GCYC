@@ -118,4 +118,8 @@ def individual_on_track(student_row, col_headers):
 	print("gpa")
 	print(gpa)
 
+	# empty values in gpa or f_count
+	if isinstance(f_count,str) or isinstance(gpa,str):
+		return False
+
 	return (f_count < 2 and gpa >= 3.0)	
