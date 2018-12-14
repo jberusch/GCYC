@@ -102,11 +102,11 @@ def plot_longitudinal_data(values_dict,field):
 	fig_file = BytesIO()
 	plt.savefig(fig_file, format='png')
 
-	print(fig_file)
-
 	fig_file.seek(0)
 	fig_data_png = base64.b64encode(fig_file.getvalue())
 	fig.clear()
+
+	print(fig_data_png)
 
 	return fig_data_png
 
