@@ -106,8 +106,6 @@ def plot_longitudinal_data(values_dict,field):
 	fig_data_png = base64.b64encode(fig_file.getvalue())
 	fig.clear()
 
-	print(fig_data_png)
-
 	return fig_data_png
 
 def individual_on_track(student_row, col_headers):

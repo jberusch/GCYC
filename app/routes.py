@@ -57,6 +57,8 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
+		print(res['plots']['gpa'])
+
 		return render_template('search.html', title='Search', individual_form=individual_form,
 			group_form=group_form, basic_data=res['basic_data'], group_search_filter=res['group_search_filter'],
 			percent_on_track=res['percent_on_track'])
