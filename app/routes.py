@@ -38,9 +38,6 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
-		res['plots']['gpa'] = base64.b64decode(res['plots']['gpa'])
-		print(res['plots']['gpa'])
-
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
