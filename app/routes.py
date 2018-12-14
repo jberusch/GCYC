@@ -1,5 +1,6 @@
 # library imports
 import os
+import base64
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.utils import secure_filename
 
@@ -37,7 +38,7 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
-		res['plots']['gpa'] = res['plots']['gpa'][2:-1]
+		res['plots']['gpa'] = base64.b64decode(res['plots']['gpa'])
 		print(res['plots']['gpa'])
 
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
