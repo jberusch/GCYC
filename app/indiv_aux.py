@@ -99,16 +99,10 @@ def plot_longitudinal_data(values_dict,field):
 	fig.set_size_inches(25,15)
 
 	# converting file to encoded png for rendering
-	# fig_file = BytesIO()
-	# plt.savefig(fig_file, format='png')
-	# fig_file.seek(0)
-	# fig_data_png = base64.b64encode(fig_file.getvalue())
-	# fig.clear()
-
 	fig_file = BytesIO()
 	plt.savefig(fig_file, format='png')
-	fig_data_png = fig_file.getvalue().encode('base64')
-	# png = html.format(fig_data_png)
+	fig_file.seek(0)
+	fig_data_png = base64.b64encode(fig_file.getvalue())
 	fig.clear()
 
 	return fig_data_png
