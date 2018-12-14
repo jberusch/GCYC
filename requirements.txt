@@ -28,7 +28,6 @@ neovim==0.2.0
 numpy==1.15.4
 openpyxl==2.5.10
 pycrypto==2.6.1
-pygobject==3.26.1
 pyparsing==2.3.0
 python-dateutil==2.7.5
 python-dotenv==0.9.1
