@@ -37,6 +37,8 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
+		print(res['plots']['gpa'])
+
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
@@ -56,8 +58,6 @@ def search():
 		if isinstance(res,str):
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
-
-		print(res['plots']['gpa'])
 
 		return render_template('search.html', title='Search', individual_form=individual_form,
 			group_form=group_form, basic_data=res['basic_data'], group_search_filter=res['group_search_filter'],
