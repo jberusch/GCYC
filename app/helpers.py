@@ -1,10 +1,10 @@
-# librayr imports
+# library imports
 import collections
 
 # helper imports
-from parsing_xlsx import get_col_headers, get_row, print_row, get_rows_in_group
-from indiv_aux import get_longitudinal_data, plot_longitudinal_data, individual_on_track, get_demographic_data
-from group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group, build_basic_data
+from app.parsing_xlsx import get_col_headers, get_row, print_row, get_rows_in_group
+from app.indiv_aux import get_longitudinal_data, plot_longitudinal_data, individual_on_track, get_demographic_data
+from app.group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group, build_basic_data
 
 def get_individual_student_data(form_data):
 	print("========== starting get_data ==============")
