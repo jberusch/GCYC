@@ -37,6 +37,7 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
+		res['plots']['gpa'] = res['plots']['gpa'][2:-1]
 		print(res['plots']['gpa'])
 
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
