@@ -1,6 +1,5 @@
 TODOs:
 Expand excel scrape to cover eoy_dashboard.xlsx
-Make it possible to upload new Excel file
 Finish requirements.txt file
 Make Readme.md
 Deploy on Heroku

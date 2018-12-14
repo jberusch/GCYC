@@ -2,6 +2,17 @@
 
 {% block content %}
     <h1>GCYC Data Portal: Upload New Spreadsheet</h1>
+    <p><hr>
+      Instructions for uploading will go here
+    <hr></p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <p style="color: red;">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <form method=post enctype=multipart/form-data>
       <input type=file name=file>
       <input type=submit value=Upload>

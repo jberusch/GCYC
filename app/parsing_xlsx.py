@@ -4,8 +4,8 @@ from openpyxl import load_workbook
 
 base_filepath = os.path.join(app.root_path,'resources/')
 wb1 = load_workbook(base_filepath + 'eoy_dashboard.xlsx')
-wb2 = load_workbook(base_filepath + 'progress_to_date_edit.xlsx')
-prog = wb2['Sheet1']
+wb2 = load_workbook(base_filepath + 'progress_to_date.xlsx')
+prog = wb2['Progress to Date']
 
 # get all column headers
 def get_col_headers():
