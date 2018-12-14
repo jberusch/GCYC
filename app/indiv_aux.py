@@ -19,21 +19,6 @@ def get_demographic_data(student_row,col_headers):
 		current_header = col_headers[i]
 	return res
 
-# def get_filter_data(form_data, student_row, col_headers):
-# 	results = {}
-
-# 	# for every filter, get the value if it's true
-# 	if form_data['gender']:
-# 		results['Gender'] = student_row[col_headers.index('Gender')].value
-# 	if form_data['ms']:
-# 		results['Middle School'] = student_row[col_headers.index('Middle School')].value
-# 	if form_data['school']:
-# 		results['School'] = student_row[col_headers.index('School')].value
-# 	if form_data['advisor']:
-# 		results['Advisor'] = student_row[col_headers.index('Advisor')].value
-
-# 	return results
-
 # PURPOSE: determine whether a string is a date
 # really just tests if the 1st char is a number
 def is_date(str):
@@ -74,7 +59,7 @@ def get_longitudinal_data(student_row, col_headers, field, to_ignore=[]):
 			break
 		
 		# add item to dict if it's not in to_ignore
-		if len(filter(lambda x: x == current_header, to_ignore)) == 0:
+		if not filter(lambda x: x == current_header, to_ignore):
 			res[current_header] = student_row[index-i].value
 		
 		i += 1
