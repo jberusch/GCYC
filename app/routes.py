@@ -37,8 +37,8 @@ def search():
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
 
-		print("==================== returning ===================")
-		print(res['metrics'])
+		print("==================== plot ===================")
+		print(res['plots']['gpa'])
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
 	
