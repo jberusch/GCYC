@@ -1,13 +1,21 @@
 # library imports
 import os
 import base64
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, send_file
 from werkzeug.utils import secure_filename
+
+from io import BytesIO
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 # local imports
 from app import app
 from app.forms import IndividualSearchForm, GroupSearchForm
 import app.helpers as helpers
+
+# GLOBAL VAR: all metrics that can be accessed
+metrics_arr = ['gpa','fc','ls','at','dt']
 
 @app.route('/')
 @app.route('/index')
@@ -37,6 +45,10 @@ def search():
 			print(res)
 			return render_template('search.html',title='Search',individual_form=individual_form,
 				group_form=group_form,error_msg=res)
+
+		# render each plot at /plots/<student_id>/<metric>
+		for m in metrics_arr:
+			render_plot(form_data['student_id'],m)
 
 		return render_template('search.html', title='Search', individual_form=individual_form, group_form=group_form, 
 			demo_data=res['demo_data'], on_track=res['on_track'], dicts=res['dicts'], plots=res['plots'], metrics=res['metrics'])
@@ -97,3 +109,9 @@ def upload():
 @app.route('/manual')
 def manual():
 	return render_template('manual.html',title='Manual')
+
+# URL format for figs: /plots/<student_id>/<metric>
+@app.route('/plots/<student_id>/<metric>')
+def render_plot(student_id,metric):
+	plot_file = helpers.get_plot_file(student_id,metric)
+	return send_file(plot_file,mimetype="image/png")

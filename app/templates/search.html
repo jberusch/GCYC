@@ -109,7 +109,8 @@
 
 		<!-- display individual data: plot -->
 		{% if plots %}
-			<img src="data:image/png;base64,{{ plots[type] }}" alt="Problem rendering plot" width="1000">
+			<!-- <img src="data:image/png;base64,{{ plots[type] }}" alt="Problem rendering plot" width="1000"> -->
+			<img src="/plots/{{ individual_form.student_id.data }}/{{ type }}" alt="Image not found" width="1000">			
 			<p><em>NB: If a value is ignored in this graph, that means it is set to empty or =#N/A in Excel</em></p>
 		{% endif %}
 	{% endfor %}

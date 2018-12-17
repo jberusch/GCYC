@@ -1,8 +1,5 @@
 TODOs:
 Expand excel scrape to cover eoy_dashboard.xlsx
-Finish requirements.txt file
-Make Readme.md
-Deploy on Heroku
 Add popup form to get 'password' before navigating to /search
 Add an NB for how on-track is defined
 

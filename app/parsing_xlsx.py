@@ -16,9 +16,9 @@ def get_col_headers():
 	return column_headers
 
 # find row corresponding to student id input 
-def get_row(id):
+def get_row(student_id,col_headers):
 	for row in prog.rows:
-		if (row[0].value == id):
+		if (row[col_headers.index('Student ID')].value == student_id):
 			return row
 
 # print a row with labels

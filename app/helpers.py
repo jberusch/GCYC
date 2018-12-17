@@ -6,6 +6,31 @@ from app.parsing_xlsx import get_col_headers, get_row, print_row, get_rows_in_gr
 from app.indiv_aux import get_longitudinal_data, plot_longitudinal_data, individual_on_track, get_demographic_data
 from app.group_aux import get_group_longitudinal_data, calc_percent_on_track, get_ids_in_group, build_basic_data
 
+# global var for accessing metrics
+metric_accessor = {
+	'gpa': ['GPA', 'Difference'],
+	'fc': ['F Count'],
+	'ls': ['LaSalle Free'],
+	'at': ['School Attendance','Difference2'],
+	'dt': ['Detentions']
+}
+
+# TODO: tie this in with individual_student_data somehow
+def get_plot_file(student_id,metric):
+	col_headers = get_col_headers()
+	student_row = get_row(int(student_id),col_headers)
+
+	# throw err here if student_row not found
+	if not student_row:
+		print("get_plot_file: error finding student row")
+		# TODOs
+
+	arr = metric_accessor[metric]
+	print(arr)
+	metric_dict = get_longitudinal_data(student_row,col_headers,arr[0],arr[1:])
+	plot_file = plot_longitudinal_data(metric_dict,arr[0])
+	return plot_file
+
 def get_individual_student_data(form_data):
 	print("========== starting get_data ==============")
 
@@ -14,10 +39,10 @@ def get_individual_student_data(form_data):
 		return "To get data on an individual student, we need their student ID #"
 
 	# NOTE: probably want to expand so users can input multiple IDs
-	id = int(form_data['student_id'])
+	student_id = int(form_data['student_id'])
 
 	col_headers = get_col_headers()
-	student_row = get_row(id)
+	student_row = get_row(student_id,col_headers)
 	# check that a match was found
 	if not student_row:
 		return "Sorry, we couldn't find data on that student ID."
@@ -65,8 +90,6 @@ def get_individual_student_data(form_data):
 
 	print("=========== ending get_data ===============")
 	return res
-
-	# TODO: create separate files for individual & group helper functions
 
 def get_group_data(form_data):
 	print("get_group_data")

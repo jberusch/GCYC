@@ -45,7 +45,7 @@ def get_longitudinal_data(student_row, col_headers, field, to_ignore=[]):
 	res = collections.OrderedDict() # ordered dictionary to hold all results
 
 	index = get_col_index(col_headers,field)
-	if index == -1: return res	
+	if index == -1: return res
 	i = 0
 	current_header = col_headers[index]
 	hit_date = False
@@ -102,6 +102,11 @@ def plot_longitudinal_data(values_dict,field):
 	fig_file = BytesIO()
 	plt.savefig(fig_file, format='png')
 	fig_file.seek(0)
+
+	fig.clear()
+	# TEMP: return file instead of encoded bytes
+	return fig_file
+
 	fig_data_png = base64.b64encode(fig_file.getvalue())
 	fig.clear()
 
